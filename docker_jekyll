@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker run --rm \
+  --volume="$PWD:/srv/jekyll" \
+  --volume="$PWD/vendor/bundle:/usr/local/bundle" \
+  --expose 4000 \
+  --net host \
+  -it jekyll/jekyll "$@"
