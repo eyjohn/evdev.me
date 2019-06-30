@@ -1,5 +1,4 @@
 #!/bin/bash
-docker volume create "jekyll_cache_$(basename $(pwd))"
 docker run --rm \
   --volume="$PWD:/srv/jekyll" \
   --volume="jekyll_cache_$(basename $(pwd)):/usr/local/bundle" \
