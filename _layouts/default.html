@@ -21,12 +21,12 @@
 {% if site.comments.isso %}<script data-isso="http://{{ site.comments.isso }}" src="//{{ site.comments.isso }}/js/embed.min.js"></script>{% endif %}
 
 <header class="compressed {% if site.dark_header %}dark{% endif %}">
-  <div class="container">
   {% unless site.hide_title or site.style == "minimal" %}
     <a href="{{ "/" | relative_url }}" alt="{{ site.title | escape }}"><img class="logo" width="200px" src="{{ "/assets/logo.png" | relative_url }}" /></a>
   {% else %}
     <a href="{{ "/" | relative_url }}" alt="{{ site.title | escape }}"><img class="logo" width="100px" src="{{ "/assets/logo.png" | relative_url }}" /></a>
   {% endunless %}
+  <div class="container">
   {% if site.navigation %}
     <nav class="site">
     {% for path in site.navigation %}
@@ -38,7 +38,7 @@
     {% endfor %}
     </nav>
   {% endif %}
-  </div>
+    <div class="spacer"></div>
   {% if site.icons %}
     <nav class="social">
     {% for link in site.icons %}
@@ -46,6 +46,7 @@
     {% endfor %}
     </nav>
   {% endif %}
+  </div>
 </header>
 
 {{ content }}
