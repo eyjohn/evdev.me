@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "evdev": "evdev-me",
+    "default": "evdev-me"
+  }
+}

@@ -62,3 +62,4 @@ exclude:
   - node_modules
   - vendor/
   - docker_jekyll
+  - firebase.json
