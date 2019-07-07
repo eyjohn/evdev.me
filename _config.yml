@@ -30,17 +30,19 @@ dark_footer: false           # keep the footer dark
 navigation:                  # site navigation in the header
   - index.html
   - about.md
-  - README.md
+  - contact.html
+  - search.html
 #  - title: "https://"       # linking external sites is also supported
 
 icons:                      # icons in the header, see http://fontawesome.com/icons
   envelope: "mailto:evgeny@evdev.me"
   twitter: "https://twitter.com/eyjohn_"
   github: "https://github.com/eyjohn"
+  linkedin: "https://www.linkedin.com/in/evgeny-yakimov-7370848/"
   rss: "/feed.xml"
 
 comments:                    # embed disqus or isso comments
-#  disqus: ""
+  disqus: "evdev"
 #  isso: ""
 
 # excerpt_separator: <!--more-->
@@ -58,8 +60,5 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - node_modules
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
+  - vendor/
   - docker_jekyll
