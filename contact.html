@@ -1,0 +1,69 @@
+---
+layout: page
+title: Contact
+permalink: /contact/
+---
+
+<p>
+    I'm always happy to talk about anything on my website or related topics. Either post a comment on the article or get
+    in touch through the form below.
+</p>
+
+<style>
+    #contactform input,
+    #contactform textarea {
+        padding: 5px;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    #contactform label {
+        display: inline-block;
+        width: 200px;
+    }
+
+    #contactform input {
+        width: 400px;
+        margin-bottom: 25px;
+    }
+
+    #contactform textarea {
+        width: 600px;
+        height: 300px;
+        vertical-align: top;
+        margin-bottom: 25px;
+    }
+
+    #contactform #submit {
+        margin-left: 200px
+    }
+
+    @media (max-width: 40em) {
+
+        #contactform input,
+        #contactform textarea {
+            width: 100%;
+        }
+
+        #contactform #submit {
+            margin-left: 0px;
+        }
+    }
+</style>
+
+<form action="https://formspree.io/evgeny@evdev.me" method="POST" id="contactform">
+    <input type="hidden" name="_subject" id="_subject" value="EvDev Contact Form">
+
+    <label for="name">Name: </label>
+    <input type="text" name="name" required>
+    <br />
+
+    <label for="email">Email: </label>
+    <input type="email" name="_replyto" required>
+    <br />
+
+    <label for="comments">Comments: </label>
+    <textarea name="comments" required></textarea>
+    <br />
+
+    <a id="submit" class="ghost" href="#" onclick="this.parentNode.submit(); return false;">Send</a>
+</form>
