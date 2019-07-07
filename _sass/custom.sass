@@ -1,0 +1,25 @@
+body > header.compressed
+  padding-top: 0
+  padding-bottom: 0
+  justify-content: center
+
+body > header img.logo
+  margin-top: 0
+  margin-bottom: 0
+
+body > header > div.container
+  display: flex
+  align-items: center
+  flex-wrap: wrap
+  flex-grow: 1
+
+body > header > div.container > div.spacer
+  flex-grow: 1
+
+@media only screen and (max-width: 1000px)
+  body > header > div.container
+    flex-direction: column
+
+.callout
+  float: right
+  margin: 10px
