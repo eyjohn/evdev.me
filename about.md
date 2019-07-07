@@ -27,6 +27,6 @@ I decided to start EvDev so that I can share my adventures as I explore and expe
 
 As you have probably already figured out the name EvDev comes from my name **Ev**geny and Software **Dev**elopment.
 
-This blog will aim to explore the various topics of cloud, containerisation, tracing and reliability and any miscellaneous problems that I find along the way. I may also occasionally delve into non-technical subjects such as agile methodology or organisational change.
+This blog will aim to explore the various topics of cloud, containerisation, tracing, reliability and any miscellaneous problems that I find along the way. I may also occasionally delve into non-technical subjects such as agile methodology or organisational change.
 
 Feel free to join in the discussion by posting a comment or sending me a message.
