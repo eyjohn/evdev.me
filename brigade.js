@@ -7,19 +7,26 @@ const { events, Job } = require("brigadier");
 events.on("check_suite:requested", runChecks);
 events.on("check_suite:rerequested", runChecks);
 events.on("check_run:rerequested", runChecks);
+events.on("push", runBuildAndDeploy);
 
 // Our main test logic, refactored into a function that returns the job
-function createBuildJob(e, project) {
+function createBuildJob(e, project, storage) {
   // Create a new job
   var buildJob = new Job("build-job");
 
   // We want our job to run the stock Docker Python 3 image
   buildJob.image = "jekyll/jekyll";
 
+  var buildTask = "jekyll build";
+  if (storage) {
+    buildTask += ` -d ${storage}`;
+    buildTask.storage.enabled = true;
+  }
+
   // Now we want it to run these commands in order:
   buildJob.tasks = [
     "cd /src",
-    "jekyll build"
+    buildTask
   ];
 
   // Display logs from the job Pod
@@ -59,7 +66,7 @@ async function runChecks(e, p) {
   //
   // On error, we catch the error and notify GitHub of a failure.
 
-  const buildJob = createBuildJob();
+  const buildJob = createBuildJob(e, p);
   try {
     await start.run();
     await buildJob.run();
@@ -71,7 +78,17 @@ async function runChecks(e, p) {
     // In this case, we mark the ending failed.
     end.env.CHECK_CONCLUSION = "failure"
     end.env.CHECK_SUMMARY = "Build failed"
-    end.env.CHECK_TEXT = `Error: ${ err }`
+    end.env.CHECK_TEXT = `Error: ${err}`
     await end.run()
   }
+}
+
+async function runBuildAndDeploy(e, project) {
+  const buildDir = "/mnt/brigade/share/site/";
+  const buildJob = createBuildJob(e, p, buildDir);
+
+  await buildJob.run();
+  var checkJob = new Job("check", "alpine", [`ls -l ${buildDir}`]);
+  checkJob.storage.enabled = true;
+  await checkJob.run();
 }
