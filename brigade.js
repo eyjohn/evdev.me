@@ -1,33 +1,30 @@
 const { events, Job } = require("brigadier");
 
-// GitHub Check events to watch for
-//
-// Note that a GitHub App will automatically generate these events
-// from a `push` event, so we don't need an explicit push event handler any longer
 events.on("check_suite:requested", runChecks);
 events.on("check_suite:rerequested", runChecks);
 events.on("check_run:rerequested", runChecks);
 events.on("push", runBuildAndDeploy);
 
-// Our main test logic, refactored into a function that returns the job
+// Build the job, optionally write built files to `storage`
 function createBuildJob(e, p, storage) {
-  // Create a new job
   var buildJob = new Job("build-job");
 
-  // We want our job to run the stock Docker Python 3 image
   buildJob.image = "jekyll/jekyll";
 
-  var buildTask = "jekyll build";
   if (storage) {
-    buildTask += ` -d ${storage}`;
     buildJob.storage.enabled = true;
+    buildJob.tasks = [
+      "cd /src",
+      `mkdir -p ${storage}`,
+      `cp firebase.json ${storage}`,
+      `jekyll build -d ${storage}/_site`
+    ];
+  } else {
+    buildJob.tasks = [
+      "cd /src",
+      "jekyll build"
+    ];
   }
-
-  // Now we want it to run these commands in order:
-  buildJob.tasks = [
-    "cd /src",
-    buildTask
-  ];
 
   // Display logs from the job Pod
   buildJob.streamLogs = true;
@@ -88,7 +85,7 @@ async function runBuildAndDeploy(e, p) {
   const buildJob = createBuildJob(e, p, buildDir);
 
   await buildJob.run();
-  var checkJob = new Job("check", "alpine", [`ls -l ${buildDir}`]);
+  var checkJob = new Job("check", "alpine", [`ls -l ${buildDir}`, `ls -l ${buildDir}/_site`]);
   checkJob.storage.enabled = true;
   await checkJob.run();
 }
