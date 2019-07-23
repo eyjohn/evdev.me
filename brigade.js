@@ -20,7 +20,7 @@ function createBuildJob(e, p, storage) {
   var buildTask = "jekyll build";
   if (storage) {
     buildTask += ` -d ${storage}`;
-    buildTask.storage.enabled = true;
+    buildJob.storage.enabled = true;
   }
 
   // Now we want it to run these commands in order:
