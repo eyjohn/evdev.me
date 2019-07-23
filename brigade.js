@@ -10,7 +10,7 @@ events.on("check_run:rerequested", runChecks);
 events.on("push", runBuildAndDeploy);
 
 // Our main test logic, refactored into a function that returns the job
-function createBuildJob(e, project, storage) {
+function createBuildJob(e, p, storage) {
   // Create a new job
   var buildJob = new Job("build-job");
 
@@ -83,7 +83,7 @@ async function runChecks(e, p) {
   }
 }
 
-async function runBuildAndDeploy(e, project) {
+async function runBuildAndDeploy(e, p) {
   const buildDir = "/mnt/brigade/share/site/";
   const buildJob = createBuildJob(e, p, buildDir);
 
