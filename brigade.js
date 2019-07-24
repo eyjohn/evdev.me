@@ -81,7 +81,7 @@ async function runChecks(e, p) {
 function createDeployJob(e, p, buildDir) {
   var deployJob = new Job("deploy", "andreysenov/firebase-tools", [
     `cd ${buildDir}`,
-    `ls -l ${buildDir}`,
+    `ls -l ${buildDir}/_site`,
     `firebase deploy --project ${p.secrets.FIREBASE_PROJECT} --token ${p.secrets.FIREBASE_TOKEN}`
   ]);
   deployJob.storage.enabled = true;
