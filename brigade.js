@@ -5,8 +5,8 @@ events.on("check_suite:rerequested", runChecks);
 events.on("check_run:rerequested", runChecks);
 events.on("push", runBuildAndDeploy);
 
-// Build the job, optionally write built files to `storage`
-function createBuildJob(e, p, storage) {
+// Build the job, optionally write built files to `buildDir`
+function createBuildJob(e, p, buildDir) {
   var buildJob = new Job("build-job");
 
   buildJob.image = "jekyll/jekyll";
@@ -16,11 +16,11 @@ function createBuildJob(e, p, storage) {
     "jekyll build"
   ];
 
-  if (storage) {
+  if (buildDir) {
     buildJob.storage.enabled = true;
     buildJob.tasks.push(
-      `mkdir -p ${storage}`,
-      `cp -rv firebase.json _site ${storage}`
+      `mkdir -p ${buildDir}`,
+      `cp -r firebase.json _site ${buildDir}`
     )
   }
 
@@ -78,12 +78,18 @@ async function runChecks(e, p) {
   }
 }
 
+function createDeployJob(e, p, buildDir) {
+  var checkJob = new Job("deploy", "andreysenov/firebase-tools", [
+    `cd ${buildDir}`,
+    `firebase deploy --project ${p.secrets.FIREBASE_PROJECT} --token ${p.secrets.FIREBASE_TOKEN}`]);
+  checkJob.storage.enabled = true;
+}
+
 async function runBuildAndDeploy(e, p) {
   const buildDir = "/mnt/brigade/share/site/";
   const buildJob = createBuildJob(e, p, buildDir);
+  const deployJob = createDeployJob(e, p, buildDir);
 
   await buildJob.run();
-  var checkJob = new Job("check", "alpine", [`ls -l ${buildDir}`, `ls -l ${buildDir}/_site`]);
-  checkJob.storage.enabled = true;
-  await checkJob.run();
+  await deployJob.run();
 }
