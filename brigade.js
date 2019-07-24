@@ -13,18 +13,16 @@ function createBuildJob(e, p, storage) {
 
   if (storage) {
     buildJob.storage.enabled = true;
-    buildJob.tasks = [
-      "cd /src",
+    buildJob.tasks.push(
       `mkdir -p ${storage}`,
-      `cp firebase.json ${storage}`,
-      `jekyll build -d ${storage}/_site`
-    ];
-  } else {
-    buildJob.tasks = [
-      "cd /src",
-      "jekyll build"
-    ];
+      `ln -s ${storage}, /src/_site`
+    )
   }
+
+  buildJob.tasks.push(
+    "cd /src",
+    "jekyll build"
+  );
 
   // Display logs from the job Pod
   buildJob.streamLogs = true;
