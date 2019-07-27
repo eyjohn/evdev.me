@@ -61,28 +61,31 @@ async function runChecks(e, p) {
   //
   // On error, we catch the error and notify GitHub of a failure.
 
-  const buildJob = createBuildJob(e, p);
+  const buildDir = "/mnt/brigade/share/site/";
+  const buildJob = createBuildJob(e, p, buildDir);
+  const deployJob = createDeployJob(e, p, buildDir, true); // Staging deployment
   try {
     await start.run();
     await buildJob.run();
-    end.env.CHECK_CONCLUSION = "success"
-    end.env.CHECK_SUMMARY = "Build completed"
-    end.env.CHECK_TEXT = result.toString()
-    await end.run()
+    await deployJob.run();
+    end.env.CHECK_CONCLUSION = "success";
+    end.env.CHECK_SUMMARY = "Build completed";
+    end.env.CHECK_TEXT = result.toString();
+    await end.run();
   } catch (err) {
     // In this case, we mark the ending failed.
-    end.env.CHECK_CONCLUSION = "failure"
-    end.env.CHECK_SUMMARY = "Build failed"
-    end.env.CHECK_TEXT = `Error: ${err}`
-    await end.run()
+    end.env.CHECK_CONCLUSION = "failure";
+    end.env.CHECK_SUMMARY = "Build failed";
+    end.env.CHECK_TEXT = `Error: ${err}`;
+    await end.run();
   }
 }
 
-function createDeployJob(e, p, buildDir) {
+function createDeployJob(e, p, buildDir, staging) {
+  const firebaseProject = staging ? p.secrets.FIREBASE_PROJECT_STAGING : p.secrets.FIREBASE_PROJECT_PRODUCTION;
   var deployJob = new Job("deploy", "andreysenov/firebase-tools", [
     `cd ${buildDir}`,
-    `ls -l ${buildDir}/_site`,
-    `firebase deploy --project ${p.secrets.FIREBASE_PROJECT} --token ${p.secrets.FIREBASE_TOKEN}`
+    `firebase deploy --project ${firebaseProject} --token ${p.secrets.FIREBASE_TOKEN}`
   ]);
   deployJob.storage.enabled = true;
   return deployJob;

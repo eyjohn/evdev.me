@@ -53,7 +53,7 @@ plugins:
  - jekyll-default-layout
  - jekyll-remote-theme
 
-remote_theme: niklasbuschmann/contrast
+remote_theme: niklasbuschmann/contrast@5447e58ad5d6e5a784c242a89250caa28bde7aee
 markdown: kramdown
 
 exclude:
