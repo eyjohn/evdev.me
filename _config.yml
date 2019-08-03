@@ -8,31 +8,24 @@ description: >- # this means to ignore newlines until "baseurl:"
   The tech escapades of a software engineer turned SRE in the world of
   containerization, cloud, monitoring, tracing and many more concepts
   still to be explored!
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://www.evdev.me"
-twitter_username: eyjohn_
-github_username:  eyjohn
 
+# Theme settings
+show_footer: true            # show the "previous" and "next" links at the end of each post
+dark_theme: true             # use the dark mode as default
+dark_header: false           # keep the header dark
+dark_footer: false           # keep the footer dark
+# style: minimal             # use a simpler style inspired by the minima theme
 
 # Page settings
 permalink: /:title/          # see https://jekyllrb.com/docs/permalinks/
 date_format: "%B %d, %Y"     # see http://shopify.github.io/liquid/filters/date/
 paginate: 8                  # use "layout: paginate" in the index.html to enable pagination
 
-# Theme settings
-hide_title: false            # remove site heading in the header
-hide_footer: false           # hide the "previous" and "next" links at the end of each post
-dark_theme: true             # use the dark mode as default
-dark_header: false           # keep the header dark
-dark_footer: false           # keep the footer dark
-# style: minimal               # use a simpler style inspired by the minima theme
-
 navigation:                  # site navigation in the header
   - index.html
   - about.md
   - contact.html
   - search.html
-#  - title: "https://"       # linking external sites is also supported
 
 icons:                      # icons in the header, see http://fontawesome.com/icons
   envelope: "mailto:evgeny@evdev.me"
@@ -45,15 +38,13 @@ comments:                    # embed disqus or isso comments
   disqus: "evdev"
 #  isso: ""
 
-# excerpt_separator: <!--more-->
-
 plugins: 
  - jekyll-feed
  - jekyll-paginate
  - jekyll-default-layout
  - jekyll-remote-theme
 
-remote_theme: niklasbuschmann/contrast@5447e58ad5d6e5a784c242a89250caa28bde7aee
+remote_theme: niklasbuschmann/contrast@v1.0
 markdown: kramdown
 
 exclude:
