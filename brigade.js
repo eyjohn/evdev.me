@@ -1,3 +1,8 @@
+// Brigade required secrets:
+// - FIREBASE_PROJECT_PRODUCTION : evdev-me
+// - FIREBASE_PROJECT_STAGING    : evdev-me-staging
+// - FIREBASE_TOKEN              : (run: `firebase login:ci`)
+
 const { events, Job } = require("brigadier");
 
 events.on("push", runBuildAndDeploy);
