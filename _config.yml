@@ -29,7 +29,7 @@ navigation:                  # site navigation in the header
 
 icons:                      # icons in the header, see http://fontawesome.com/icons
   envelope: "mailto:evgeny@evdev.me"
-  twitter: "https://twitter.com/eyjohn_"
+  twitter: "https://twitter.com/TheEvDev"
   github: "https://github.com/eyjohn"
   linkedin: "https://www.linkedin.com/in/evgeny-yakimov-7370848/"
   rss: "/feed.xml"
