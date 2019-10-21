@@ -84,6 +84,12 @@ I chose to use [nginx-ingress](https://kubernetes.github.io/ingress-nginx/) to h
 gcloud compute firewall-rules create nginx-ingress --allow tcp:80,tcp:443
 ```
 
+Whilst not covered here, you will probably want to setup DNS to point to the IP addresses which you can find by running:
+
+```sh
+kubectl get nodes -o jsonpath='{ $.items[*].status.addresses[?(@.type=="ExternalIP")].address }'
+```
+
 #### 2. Configure nginx-ingress
 
 `values.yaml`
@@ -101,6 +107,8 @@ controller:
 ```sh
 helm install -n nginx-ingress --namespace nginx-ingress stable/nginx-ingress -f values.yaml
 ```
+
+
 
 ### Certificate Manager
 
@@ -158,7 +166,12 @@ I chose the NFS storage provisioner, as it was easy to set up and provides the `
 helm install -n nfs-server-provisioner --namespace nfs-server-provisioner  stable/nfs-server-provisioner
 ```
 
-##
+## Setting up Brigade
+
+Setting up brigade with GitHub integration is a fairly involved effort and not great for first-time users. This post does not cover the process of registring a GitHub app which is covered in more detail on the official [brigade-github-app documentation](https://github.com/brigadecore/brigade-github-app).
+
+
+
 
 
 ---
