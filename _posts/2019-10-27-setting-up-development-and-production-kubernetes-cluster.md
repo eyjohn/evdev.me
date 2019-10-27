@@ -62,7 +62,7 @@ And that's it, you have a working cluster, let's make it do something!
 
 Helm is required for all of the next components that I need to install. 
 
-NOTE: Before installing helm, you may need to configure RBAC, see the documentation [Role-based Access Control Documentation](https://github.com/helm/helm/blob/master/docs/rbac.md).
+*NOTE: Before installing helm, you may need to configure RBAC, see the documentation [Role-based Access Control Documentation](https://github.com/helm/helm/blob/master/docs/rbac.md).*
 
 To install helm simply:
 
