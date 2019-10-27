@@ -16,7 +16,7 @@ function createBuildJob(e, p) {
   buildJob.tasks = [
     "cd /src",
     "jekyll build",
-    "cp -r firebase.json _site build"
+    "cp -r firebase.json _site /build"
   ];
 
   buildJob.storage.enabled = true;
