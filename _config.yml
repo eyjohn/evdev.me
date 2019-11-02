@@ -4,6 +4,7 @@ title: EvDev
 author: "Evgeny Yakimov"
 email: evgeny@evdev.me
 lang: "en"
+url: https://evdev.me
 description: >- # this means to ignore newlines until "baseurl:"
   The tech escapades of a software engineer turned SRE in the world of
   containerization, cloud, monitoring, tracing and many more concepts
@@ -43,6 +44,7 @@ plugins:
  - jekyll-paginate
  - jekyll-default-layout
  - jekyll-remote-theme
+ - jekyll-sitemap
 
 remote_theme: niklasbuschmann/contrast@v1.0
 markdown: kramdown
