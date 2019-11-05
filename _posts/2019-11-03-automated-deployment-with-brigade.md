@@ -18,13 +18,70 @@ This website is built using Jekyll, which is basically the process of running `j
 
 ### Hosting and Deployment
 
-I use [Google's Firebase Hosting](https://firebase.google.com/products/hosting/) to host this website as it offers secure (HTTPS) web-hosting, caches your content globally for faster access and most importantly, it comes with a free tier that's more than enough for me. Although this post uses Firebase CLI for deployment, using an alternative hosting, such as uploading files over FTP/SCP should be fairly similar. It's worth noting that this type of website can easily be hosted on GitHub pages, but I chose to use my own hosting as I wanted to set up my own build and deployment process.
+I use [Google's Firebase Hosting](https://firebase.google.com/products/hosting/) for this website as it offers secure (HTTPS) web-hosting, caches your content globally for faster access and most importantly, it comes with a free tier that's more than enough for me. Although this post uses Firebase CLI for deployment, using an alternative hosting, such as uploading files over FTP/SCP should be fairly similar. It's worth noting that this type of website can easily be hosted on GitHub pages, but I chose to use my own hosting as I wanted to set up my own build and deployment process.
 
 ### Brigade
 
-[Brigade](https://brigade.sh/) is an event driven scripting framework designed to work for containers which is well suited to continuous integration and as this post demonstrates, also to initiate continuous deployment. This post will use a Brigade instance configured with GitHub integration set up in my earlier post [Setting up a Kubernetes Cluster for Development and Production]({% post_url 2019-10-27-setting-up-development-and-production-kubernetes-cluster %})
+[Brigade](https://brigade.sh/) is an event driven scripting framework designed to work for containers which is well suited to continuous integration or to initiate continuous deployment. This post uses the Brigade instance configured with GitHub integration as set up in my earlier post [Setting up a Kubernetes Cluster for Development and Production]({% post_url 2019-10-27-setting-up-development-and-production-kubernetes-cluster %})
+
+## Continuous integration workflow
+
+For this project I decided to use a simple workflow of building and deploying my website upon every push to some protected branches:
+
+- **master** - main website
+- **staging** - staging version for manually validating changes
+
+Brigade lets you define more complex workflows such as PR validation by running test suites or other tools. However, these are unnecessary for this type of project and I only really need brigade to trigger my deployment pipeline.
 
 ## Setting up Brigade Project
+
+Brigade provides the CLI tool [brig](https://docs.brigade.sh/topics/brig/) which makes it very easy to create a project:
+
+### 1. Create the project
+
+```sh
+$ brig project create
+? VCS or no-VCS project? VCS
+? Project Name eyjohn/evdev.me
+? Full repository name github.com/eyjohn/evdev.me
+? Clone URL (https://github.com/your/repo.git) https://github.com/eyjohn/evdev.me.git
+? Add secrets? Yes --- SEE BELOW ---
+...
+? Where should the project's shared secret come from? Leave undefined
+? Configure GitHub Access? No
+? Configure advanced options No
+Project ID: brigade-2809670f5c85efb78f808c7446e312340c1893136c869db51aa557
+```
+
+You can now verify that your project has been created by running:
+
+```sh
+$ brig project list
+NAME                 	ID                                                            	REPO                            
+eyjohn/evdev.me      	brigade-2809670f5c85efb78f808c7446e312340c1893136c869db51aa557	github.com/eyjohn/evdev.me  
+```
+
+Or alternatively by launching the Brigade dashboard:
+
+```sh
+$ brig dashboard
+2019/11/05 22:32:41 Connecting to kashti at http://localhost:8081...
+2019/11/05 22:32:42 Connected! When you are finished with this session, enter CTRL+C.
+```
+
+{:refdef: style="text-align: center;"}
+![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/brigade_new_project.png" | relative_url }})
+{: refdef}
+
+
+
+### 2. Configure secrets
+
+You can define secrets that would be available to your `brigade.js` script, allowing you to store sensitive credentials without having to place them in the repo or into the containers.
+
+In this case, I plan to store my Firebase authentication credentials, but these could likewise be used to store an SSH key or FTP credentials.
+
+The easiest way to do this is at the time of the creation of the project.
 
 - creating project
   - Brig CLI
