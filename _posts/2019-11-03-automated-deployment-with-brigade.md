@@ -62,7 +62,7 @@ NAME                 	ID                                                        
 eyjohn/evdev.me      	brigade-2809670f5c85efb78f808c7446e312340c1893136c869db51aa557	github.com/eyjohn/evdev.me  
 ```
 
-Or alternatively by launching the Brigade dashboard:
+Or alternatively by launching the "Kashti" dashboard provided by Brigade:
 
 ```sh
 $ brig dashboard
@@ -90,16 +90,117 @@ To allow the GitHub app used by Brigade to access the repository, it will need t
 ![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/github_add_brigade.png" | relative_url }})
 {: refdef}
 
+## Creating jobs
 
-## Creating a build Job
+With the project set up, let's start adding some jobs.
 
-## Creating a deployment Job
+### 1. Creating a test job
 
-## Sharing build artefacts
+First, let's create a simple job to test that simply prints the branch:
 
-## Sharing cache
+`brigade.js`
+```js
+const { events, Job } = require("brigadier");
+events.on("push", (event, project) => {
+  const branch = event.revision.ref;
+  const job = new Job("test-job", "alpine", [`echo ${branch}`]);
+  job.run();
+});
+```
 
-## Setting up staging deployment
+After pushing we can verify that its working by using the Kashti dashboard:
+
+{:refdef: style="text-align: center;"}
+![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/test_job.png" | relative_url }})
+{: refdef}
+
+### 2. Creating a build job
+
+To build this website, Brigade will need to pull the source code, run the `jekyll build` command and finally output the built website for the deployment step.
+
+```js
+function createBuildJob(event, project) {
+  var buildJob = new Job("build-job");
+
+  buildJob.image = "jekyll/jekyll";
+
+  buildJob.tasks = [
+    "cd /src",
+    "jekyll build",
+  ];
+
+  buildJob.streamLogs = true;
+  return buildJob;
+}
+```
+
+To export the build artefacts to the deployment job, the build artefacts will need to be copied to a shared job **storage** which is shared across jobs and can be configured using:
+
+```js
+  buildJob.tasks = [
+    "cd /src",
+    "jekyll build",
+    "cp -r firebase.json _site /build" // firebase.json required for deployment
+  ];
+  buildJob.storage.enabled = true;
+  buildJob.storage.path = '/build';
+```
+
+Since my Jekyll configuration requires some modules to be installed, it would be great to not have to install them every time I run the build and re-use them from the previous builds. This can configured using the job **cache** which is shared between builds for the same job and can be configured using:
+
+```js
+  buildJob.cache.size = '100Mi';
+  buildJob.cache.enabled = true;
+  buildJob.cache.path = '/usr/local/bundle';
+```
+
+### 3. Creating a deployment job
+
+To deploy this website to firebase, I'll use an image with the firebase cli tool pre-installed. Since I plan on having two different deployments: staging and production, I will make this a configurable parameter. I will be using project secrets to store the credentials for my deployment destinations. This job will need to pull in the build artefacts from earlier and deploy them.
+
+```js
+function createDeployJob(event, project, staging) {
+    const firebaseProject = staging
+    ? project.secrets.FIREBASE_PROJECT_STAGING
+    : project.secrets.FIREBASE_PROJECT_PRODUCTION;
+  var deployJob = new Job("deploy", "andreysenov/firebase-tools", [
+    'cd /build',
+    `firebase deploy --project ${firebaseProject} --token ${project.secrets.FIREBASE_TOKEN}`
+  ]);
+  deployJob.storage.enabled = true;
+  deployJob.storage.path = '/build';
+  deployJob.streamLogs = true;
+  return deployJob;
+}
+```
+### 4. Putting it all together
+
+Finally let's hook up these jobs to the push event. For my workflow, I will need to detect the branch of the push to determine whether the build should be deployed to the production or staging URL.
+
+```js
+async function runBuildAndDeploy(event, project) {
+  const buildJob = createBuildJob(event, project);
+
+  var staging;
+  if (e.revision.ref == "refs/heads/master") {
+    staging = false;
+  } else if (e.revision.ref == "refs/heads/staging") {
+    staging = true;
+  } else {
+    return; // Nothing to do for other branches
+  }
+
+  const deployJob = createDeployJob(e, p, staging);
+
+  await buildJob.run();
+  await deployJob.run();
+}
+events.on("push", runBuildAndDeploy);
+```
+
+### 5. Testing the pipeline
+
+By pushing to the `staging` branch I can now test that both jobs are working.
 
 ## Conclusion
 

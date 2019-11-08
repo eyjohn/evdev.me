@@ -1,70 +1,63 @@
+// Brigade required secrets:
+// - FIREBASE_PROJECT_PRODUCTION : evdev-me
+// - FIREBASE_PROJECT_STAGING    : evdev-me-staging
+// - FIREBASE_TOKEN              : (run: `firebase login:ci`)
+
 const { events, Job } = require("brigadier");
-events.on("push", (event, project) => {
-  const branch = event.revision.ref;
-  const job = new Job("test-job", "alpine", [`echo ${branch}`]);
-  job.streamLogs = true;
-  job.run();
-});
 
+events.on("push", runBuildAndDeploy);
 
-// // Brigade required secrets:
-// // - FIREBASE_PROJECT_PRODUCTION : evdev-me
-// // - FIREBASE_PROJECT_STAGING    : evdev-me-staging
-// // - FIREBASE_TOKEN              : (run: `firebase login:ci`)
+// Build the job
+function createBuildJob(event, project) {
+  var buildJob = new Job("build-job");
 
-// const { events, Job } = require("brigadier");
+  buildJob.image = "jekyll/jekyll";
 
-// events.on("push", runBuildAndDeploy);
+  buildJob.tasks = [
+    "cd /src",
+    "jekyll build",
+    "cp -r firebase.json _site /build" // firebase.json required for deployment
+  ];
 
-// // Build the job
-// function createBuildJob(e, p) {
-//   var buildJob = new Job("build-job");
+  buildJob.storage.enabled = true;
+  buildJob.storage.path = '/build';
 
-//   buildJob.image = "jekyll/jekyll";
+  buildJob.cache.size = '100Mi';
+  buildJob.cache.enabled = true;
+  buildJob.cache.path = '/usr/local/bundle';
 
-//   buildJob.tasks = [
-//     "cd /src",
-//     "jekyll build",
-//     "cp -r firebase.json _site /build"
-//   ];
+  buildJob.streamLogs = true;
+  return buildJob;
+}
 
-//   buildJob.storage.enabled = true;
-//   buildJob.storage.path = '/build';
+function createDeployJob(event, project, staging) {
+  const firebaseProject = staging
+    ? project.secrets.FIREBASE_PROJECT_STAGING
+    : project.secrets.FIREBASE_PROJECT_PRODUCTION;
+  var deployJob = new Job("deploy", "andreysenov/firebase-tools", [
+    'cd /build',
+    `firebase deploy --project ${firebaseProject} --token ${p.secrets.FIREBASE_TOKEN}`
+  ]);
+  deployJob.storage.enabled = true;
+  deployJob.storage.path = '/build';
+  deployJob.streamLogs = true;
+  return deployJob;
+}
 
-//   buildJob.cache.size = '100Mi';
-//   buildJob.cache.enabled = true;
-//   buildJob.cache.path = '/usr/local/bundle';
+async function runBuildAndDeploy(event, project) {
+  const buildJob = createBuildJob(event, project);
 
-//   buildJob.streamLogs = true;
-//   return buildJob;
-// }
+  var staging;
+  if (event.revision.ref == "refs/heads/master") {
+    staging = false;
+  } else if (e.revision.ref == "refs/heads/staging") {
+    staging = true;
+  } else {
+    return; // Nothing to do for other branches
+  }
 
-// function createDeployJob(e, p, staging) {
-//   const firebaseProject = staging ? p.secrets.FIREBASE_PROJECT_STAGING : p.secrets.FIREBASE_PROJECT_PRODUCTION;
-//   var deployJob = new Job("deploy", "andreysenov/firebase-tools", [
-//     'cd /build',
-//     `firebase deploy --project ${firebaseProject} --token ${p.secrets.FIREBASE_TOKEN}`
-//   ]);
-//   deployJob.storage.enabled = true;
-//   deployJob.storage.path = '/build';
-//   deployJob.streamLogs = true;
-//   return deployJob;
-// }
+  const deployJob = createDeployJob(event, project, staging);
 
-// async function runBuildAndDeploy(e, p) {
-//   const buildJob = createBuildJob(e, p);
-
-//   var staging;
-//   if (e.revision.ref == "refs/heads/master") {
-//     staging = false;
-//   } else if (e.revision.ref == "refs/heads/staging") {
-//     staging = true;
-//   } else {
-//     return; // Nothing to do
-//   }
-
-//   const deployJob = createDeployJob(e, p, staging);
-
-//   await buildJob.run();
-//   await deployJob.run();
-// }
+  await buildJob.run();
+  await deployJob.run();
+}
