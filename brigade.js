@@ -2,6 +2,7 @@ const { events, Job } = require("brigadier");
 events.on("push", (event, project) => {
   const branch = event.revision.ref;
   const job = new Job("test-job", "alpine", [`echo ${branch}`]);
+  job.streamLogs = true;
   job.run();
 });
 
