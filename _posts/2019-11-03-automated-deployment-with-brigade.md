@@ -200,7 +200,11 @@ events.on("push", runBuildAndDeploy);
 
 ### 5. Testing the pipeline
 
-By pushing to the `staging` branch I can now test that both jobs are working.
+By pushing to the `staging` branch I can now test that both jobs are working and validate that my staging URL is working.
+
+{:refdef: style="text-align: center;"}
+![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/pipeline.png" | relative_url }})
+{: refdef}
 
 ## Conclusion
 
