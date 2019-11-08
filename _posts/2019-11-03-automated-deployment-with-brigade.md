@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Automated deployments of this site with Brigade"
-date:   2019-11-03 19:23:59 +00:00
+date:   2019-11-08 23:08:51 +00:00
 categories: [docker, kubernetes, continuous-deployment]
 tags: [brigade, jekyll, website, docker, kubernetes]
 ---
@@ -182,15 +182,15 @@ async function runBuildAndDeploy(event, project) {
   const buildJob = createBuildJob(event, project);
 
   var staging;
-  if (e.revision.ref == "refs/heads/master") {
+  if (event.revision.ref == "refs/heads/master") {
     staging = false;
-  } else if (e.revision.ref == "refs/heads/staging") {
+  } else if (event.revision.ref == "refs/heads/staging") {
     staging = true;
   } else {
     return; // Nothing to do for other branches
   }
 
-  const deployJob = createDeployJob(e, p, staging);
+  const deployJob = createDeployJob(event, project, staging);
 
   await buildJob.run();
   await deployJob.run();
@@ -200,7 +200,7 @@ events.on("push", runBuildAndDeploy);
 
 ### 5. Testing the pipeline
 
-By pushing to the `staging` branch I can now test that both jobs are working and validate that my staging URL is working.
+By pushing to the `staging` branch I can now test that both jobs are working.
 
 {:refdef: style="text-align: center;"}
 ![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/pipeline.png" | relative_url }})
