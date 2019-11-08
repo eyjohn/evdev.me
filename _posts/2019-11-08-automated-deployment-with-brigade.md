@@ -71,7 +71,7 @@ $ brig dashboard
 ```
 
 {:refdef: style="text-align: center;"}
-![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/brigade_new_project.png" | relative_url }})
+![Screenshot of fresh project in Kashti]({{ "/assets/posts/automated-deployment-with-brigade/brigade_new_project.png" | relative_url }})
 {: refdef}
 
 ### 2. Configure secrets
@@ -87,7 +87,7 @@ The easiest way to do this is at the time of the creation of the project.
 To allow the GitHub app used by Brigade to access the repository, it will need to be configured in [GitHub Apps](https://github.com/settings/apps) -> Edit -> Install App.
 
 {:refdef: style="text-align: center;"}
-![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/github_add_brigade.png" | relative_url }})
+![Screenshot of GitHub app installation for project]({{ "/assets/posts/automated-deployment-with-brigade/github_add_brigade.png" | relative_url }})
 {: refdef}
 
 ## Creating jobs
@@ -111,7 +111,7 @@ events.on("push", (event, project) => {
 After pushing we can verify that its working by using the Kashti dashboard:
 
 {:refdef: style="text-align: center;"}
-![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/test_job.png" | relative_url }})
+![Screenshot of test job build in Kashti]({{ "/assets/posts/automated-deployment-with-brigade/test_job.png" | relative_url }})
 {: refdef}
 
 ### 2. Creating a build job
@@ -203,7 +203,7 @@ events.on("push", runBuildAndDeploy);
 By pushing to the `staging` branch I can now test that both jobs are working.
 
 {:refdef: style="text-align: center;"}
-![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/pipeline.png" | relative_url }})
+![Screenshot of pipeline in Kashti]({{ "/assets/posts/automated-deployment-with-brigade/pipeline.png" | relative_url }})
 {: refdef}
 
 ## Conclusion
