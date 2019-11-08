@@ -36,7 +36,7 @@ function createDeployJob(event, project, staging) {
     : project.secrets.FIREBASE_PROJECT_PRODUCTION;
   var deployJob = new Job("deploy", "andreysenov/firebase-tools", [
     'cd /build',
-    `firebase deploy --project ${firebaseProject} --token ${p.secrets.FIREBASE_TOKEN}`
+    `firebase deploy --project ${firebaseProject} --token ${project.secrets.FIREBASE_TOKEN}`
   ]);
   deployJob.storage.enabled = true;
   deployJob.storage.path = '/build';
@@ -50,7 +50,7 @@ async function runBuildAndDeploy(event, project) {
   var staging;
   if (event.revision.ref == "refs/heads/master") {
     staging = false;
-  } else if (e.revision.ref == "refs/heads/staging") {
+  } else if (event.revision.ref == "refs/heads/staging") {
     staging = true;
   } else {
     return; // Nothing to do for other branches
