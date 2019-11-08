@@ -9,7 +9,7 @@ events.on("push", runBuildAndDeploy);
 
 // Build the job
 function createBuildJob(event, project) {
-  var buildJob = new Job("build-job");
+  var buildJob = new Job("build");
 
   buildJob.image = "jekyll/jekyll";
 
