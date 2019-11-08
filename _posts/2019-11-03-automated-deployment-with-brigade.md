@@ -39,7 +39,7 @@ Brigade provides the CLI tool [brig](https://docs.brigade.sh/topics/brig/) which
 
 ### 1. Create the project
 
-```sh
+```text
 $ brig project create
 ? VCS or no-VCS project? VCS
 ? Project Name eyjohn/evdev.me
@@ -47,7 +47,8 @@ $ brig project create
 ? Clone URL (https://github.com/your/repo.git) https://github.com/eyjohn/evdev.me.git
 ? Add secrets? Yes --- SEE BELOW ---
 ...
-? Where should the project's shared secret come from? Leave undefined
+? Where should the project's shared secret come from? Specify my own
+? Shared Secret **********
 ? Configure GitHub Access? No
 ? Configure advanced options No
 Project ID: brigade-2809670f5c85efb78f808c7446e312340c1893136c869db51aa557
@@ -73,8 +74,6 @@ $ brig dashboard
 ![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/brigade_new_project.png" | relative_url }})
 {: refdef}
 
-
-
 ### 2. Configure secrets
 
 You can define secrets that would be available to your `brigade.js` script, allowing you to store sensitive credentials without having to place them in the repo or into the containers.
@@ -83,10 +82,14 @@ In this case, I plan to store my Firebase authentication credentials, but these 
 
 The easiest way to do this is at the time of the creation of the project.
 
-- creating project
-  - Brig CLI
-  - Secrets...
-- enabling GitHub app
+### 3. Enable GitHub app access
+
+To allow the GitHub app used by Brigade to access the repository, it will need to be configured in [GitHub Apps](https://github.com/settings/apps) -> Edit -> Install App.
+
+{:refdef: style="text-align: center;"}
+![Screenshot of fresh project in Brigade dashboard]({{ "/assets/posts/automated-deployment-with-brigade/github_add_brigade.png" | relative_url }})
+{: refdef}
+
 
 ## Creating a build Job
 
