@@ -112,7 +112,7 @@ Which looks like:
 
 {:refdef: style="text-align: center;"}
 ![Screen shot of jekyll new website]({{ "/assets/posts/making-this-website-with-jekyll/jekyll_new_screenshot.png" | relative_url }})
-{: refdef}
+{:refdef}
 
 Now that they boilerplate is out of the way, I can start personalising it.
 
