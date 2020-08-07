@@ -48,7 +48,7 @@ async function runBuildAndDeploy(event, project) {
   const buildJob = createBuildJob(event, project);
 
   var staging;
-  if (event.revision.ref == "refs/heads/master") {
+  if (event.revision.ref == "refs/heads/main") {
     staging = false;
   } else if (event.revision.ref == "refs/heads/staging") {
     staging = true;
