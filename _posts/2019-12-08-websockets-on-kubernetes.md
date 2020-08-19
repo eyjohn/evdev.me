@@ -331,14 +331,14 @@ ingress:
   # My cluster has an ingress controller
   enabled: true
   hosts:
-    - gowebsockettest.evkube.evdev.me
+    - gowebsockettest.homelab.evdev.me
   annotations:
     # I can use my certificate manager to ass https/wss
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
   tls:
   - hosts:
-    - gowebsockettest.evkube.evdev.me
+    - gowebsockettest.homelab.evdev.me
     secretName: gowebsockettest-tls
 # I had to extend the helm charts to support probes
 readinessProbe:
@@ -361,7 +361,7 @@ To install this, I can simply run:
 helm install -n gowebsockettest charts/gowebsockettest/ -f values.yaml
 ```
 
-Once the deployment has completed, we can now test it on the end-point: [gowebsockettest.evkube.evdev.me](https://gowebsockettest.evkube.evdev.me).
+Once the deployment has completed, we can now test it on the end-point: [gowebsockettest.homelab.evdev.me](https://gowebsockettest.homelab.evdev.me).
 
 ## Demo
 
@@ -375,4 +375,4 @@ Here is a quick demo of the client-side application and server side logs:
 
 WebSockets were incredibly easy to get started with, especially in Go where Goroutines made asynchronous event handling very trivial. They fit well within the web-stack, so all the HTTP related set up worked just like with any normal web application. Therefore they allow a natural Kubernetes development and deployment workflow and I had no issues with any development tools or when deploying the applications to my Kubernetes cluster. This definitely goes to show that a web-based platform has a lot to offer for writing real-time data streaming applications and that it fits well within a Kubernetes environment.
 
-You can find a working version of the project repository on my GitHub repository [eyjohn/gowebsockettest](https://github.com/eyjohn/gowebsockettest) and a live version of this app on [gowebsockettest.evkube.evdev.me](https://gowebsockettest.evkube.evdev.me) for however long that I keep it running.
+You can find a working version of the project repository on my GitHub repository [eyjohn/gowebsockettest](https://github.com/eyjohn/gowebsockettest) and a live version of this app on [gowebsockettest.homelab.evdev.me](https://gowebsockettest.homelab.evdev.me) for however long that I keep it running.
