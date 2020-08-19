@@ -1,7 +1,7 @@
 #!/bin/bash
 docker run --rm \
-  --volume="$PWD:/srv/jekyll" \
-  --volume="jekyll_cache_$(basename $(pwd)):/usr/local/bundle" \
-  --expose 4000 \
-  --net host \
+  --volume "$PWD:/srv/jekyll" \
+  --volume "jekyll_cache_$(basename $(pwd)):/usr/local/bundle" \
+  --name "jekyll_$(basename $(pwd))" \
+  --publish 4000:4000 \
   -it jekyll/jekyll "$@"
