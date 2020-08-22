@@ -36,7 +36,7 @@ I expect that you already have a basic understanding of [Kubernetes](https://kub
 
 ### Brigade for Continuous Integration
 
-[Brigade](https://brigade.sh/) is an event driven scripting framework designed to work for containers which is well suited to continuous integration. It comes with great support for GitHub integration.
+[Brigade](https://brigade.sh/) is an event-driven scripting framework designed to work for containers which is well suited to continuous integration. It comes with great support for GitHub integration.
 
 ## Setting up a cluster
 
