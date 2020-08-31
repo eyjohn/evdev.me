@@ -121,7 +121,7 @@ kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cer
 
 #### 2. Add an issuer
 
-**NOTE: Please using a staging issuer first before attempting to use a production one to avoid getting banned/throttled by Let's Encrypt by accident!**
+**NOTE: Please use a staging issuer first before attempting to use a production one to avoid getting banned/throttled by Let's Encrypt by accident!**
 
 Create the following configuration file (and replace your email).
 
