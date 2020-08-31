@@ -8,7 +8,7 @@ tags: [jekyll, website, docker, favicon]
 
 A walk-through of how I made this easy to maintain but featureful static website using **Jekyll** based on a **Docker** development workflow. Although this required some ramp-up to getting started, making changes is trivial. All the steps outlined below should be easy to follow and include a brief explanation to help you learn!
 
-Jekyll has become a popular tool for generating static websites for anything from blogs, project website or documentation portals. The main reason it got my attention was that it can give the appearance of a rich dynamic website but is ultimately just a set of generated HTML files. It also provides an easy way to mix `HTML` and `markdown` to get the flexibility you sometimes need with the simplicity you prefer which makes it easy to really add new content. Jekyll also powers GitHub Pages behind the scenes which allows you to serve content purely from your github repository.
+Jekyll has become a popular tool for generating static websites for anything from blogs, project website or documentation portals. The main reason it got my attention was that it can give the appearance of a rich dynamic website but is ultimately just a set of generated HTML files. It also provides an easy way to mix `HTML` and `markdown` to get the flexibility you sometimes need with the simplicity you prefer which makes it easy to really add new content. Jekyll also powers GitHub Pages behind the scenes which allows you to serve content purely from your GitHub repository.
 
 You are looking at the live version of this website based on the source repo [eyjohn/evdev.me](https://github.com/eyjohn/evdev.me){:target="_blank"} but NOT hosted on GitHub Pages.
 
@@ -43,7 +43,7 @@ git init
 
 ### Setup Jekyll
 
-I will be using `docker` to run `jekyll` rather than install it on my system. This is because I plan on creating a CI/CD pipeline built on top of containers which I will explore in a future post. You can, however, install it natively on your system which I will not be covering.
+I will be using `docker` to run `jekyll` rather than installing it on my system. This is because I plan on creating a CI/CD pipeline built on top of containers which I will explore in a future post. You can, however, install it natively on your system which I will not be covering.
 
 I chose the `jekyll/jekyll` dockerhub images which are provided by this repo [jekyll-docker](https://github.com/envygeeks/jekyll-docker/blob/master/README.md){:target="_blank"} and has great documentation. Let's write a quick wrapper script to easier to invoke the container while we develop:
 
@@ -58,7 +58,7 @@ docker run --rm \
 
 A fixed version can also be specified, although I just chose to use the latest available at the time (3.8.5).
 
-*NOTE: it is important that your Docker volume mounts work correctly, initially my setup: WSL + docker (minikube) did not preserve unix execution mode correctly, and I lost HOURS to this as my gems would fail to install!*
+*NOTE: it is important that your Docker volume mounts work correctly, initially my setup: WSL + docker (minikube) did not preserve Unix execution mode correctly, and I lost HOURS to this as my gems would fail to install!*
 
 ### Get Jekyll to create a new site
 
@@ -114,7 +114,7 @@ Which looks like:
 ![Screen shot of jekyll new website]({{ "/assets/posts/making-this-website-with-jekyll/jekyll_new_screenshot.png" | relative_url }})
 {:refdef}
 
-Now that they boilerplate is out of the way, I can start personalising it.
+Now that the boilerplate is out of the way, I can start personalising it.
 
 ## Customising the website
 
@@ -130,7 +130,7 @@ The **contrast** theme had the option to use a "remote" install (not copying all
 
 Alternatively, some themes would require you to start with their template repository.
 
-Some features may require you to install jekyll plugins which can be done by changing the `jekyll_plugins` section in your `Gemfile`.
+Some features may require you to install Jekyll plugins which can be done by changing the `jekyll_plugins` section in your `Gemfile`.
 
 #### 2. Configuring your site
 
@@ -143,7 +143,7 @@ In some cases, I had to update `Gemfile` and edit or overload layout files.
 Depending on how you installed your theme, you will have to either:
 
 - **Local Install (all theme assets in repo)** <br /> Adjust existing layouts
-- **Remote Install (theme assets in bundel/remote)** <br /> Copy existing layouts into `_layout` and modify as appropriate
+- **Remote Install (theme assets in bundle/remote)** <br /> Copy existing layouts into `_layout` and modify as appropriate
 
 Jekyll will search for `_layouts` and `_includes` in your base folder first, which allows any file from themes to be simply overridden by creating a copy in your base folder.
 
@@ -203,7 +203,7 @@ After registering on [disqus.com](https://disqus.com/) and creating a "site" wit
 
 Google offers a free service called [Custom Search Engine](https://cse.google.com/) which will automatically crawl your website and build a search index for it. You can then expose this as a search form on your own website.
 
-You will need to first register your website and set a URL matching pattern after which you will be given the embed code. After that I just added a `search.html` page as follows:
+You will need to first register your website and set a URL matching pattern after which you will be given the embed code. After that, I just added a `search.html` page as follows:
 
 ```html
 ---
