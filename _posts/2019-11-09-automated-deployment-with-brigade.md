@@ -108,7 +108,7 @@ events.on("push", (event, project) => {
 });
 ```
 
-After pushing we can verify that its working by using the Kashti dashboard:
+After pushing we can verify that it's working by using the Kashti dashboard:
 
 {:refdef: style="text-align: center;"}
 ![Screenshot of test job build in Kashti]({{ "/assets/posts/automated-deployment-with-brigade/test_job.png" | relative_url }})
