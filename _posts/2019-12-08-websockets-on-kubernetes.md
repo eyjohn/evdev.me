@@ -46,7 +46,7 @@ Once set up, I can simply run `draft up` (and then `draft connect`) to connect t
 
 ### Serving static content
 
-Let's create a basic web server that serves only a single page. In this case, the file created earlier: `index.html`.
+Let's create a basic web server that serves only a single page. In this case, the file: `index.html`.
 
 `main.go`
 ```go
@@ -119,7 +119,7 @@ $ curl http://localhost:65400/healthz
 OK
 ```
 
-### Accepting websocket connections
+### Accepting WebSocket connections
 
 There are multiple options for adding WebSocket support in Go, at the time of writing, it seemed that the [Gorilla WebSocket](https://github.com/gorilla/websocket) implementation provided the best features. This package works on top of `net/http` by taking an existing connection and "upgrading" it to a WebSocket.
 
@@ -151,7 +151,7 @@ func main() {
 }
 ```
 
-Now that the server is capable of accepting websocket connections, let's switch to the client-side application.
+Now that the server is capable of accepting WebSocket connections, let's switch to the client-side application.
 
 ## The client-side application
 
